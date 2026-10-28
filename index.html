@@ -1196,12 +1196,12 @@ const FOOD_GUIDE = [
 ];
 
 const API_STORAGE_KEY = 'amgad_private_gemini_key_only';
-const DATA_STORAGE_KEY = 'amgad_bilingual_s23_v2';
+const DATA_STORAGE_KEY = 'amgad_ios_full_en_v5';
 
 let injectedCoachState = window.__COACH_SNAPSHOT__ || null;
 
 let state = injectedCoachState || JSON.parse(localStorage.getItem(DATA_STORAGE_KEY)) || {
-    lang: 'ar',
+    lang: 'en',
     startDate: '2026-10-25',
     dayType: 'workout',
     showRaw: false,
