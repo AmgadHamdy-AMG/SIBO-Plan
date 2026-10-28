@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000" id="metaThemeColor">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>60-Day SIBO & Recomp Plan | Amgad</title>
+    <link rel="manifest" id="pwaManifest">
+    <style>
+        :root {
+            --bg: #F5F5F7;
+            --card: #FFFFFF;
+            --card-sub: #F2F2F7;
+            --text: #1D1D1F;
+            --muted: #86868B;
+            --line: rgba(60, 60, 67, 0.12);
+            --blue: #007AFF;
+            --blue-soft: rgba(0, 122, 255, 0.1);
+            --green: #34C759;
+            --green-soft: rgba(52, 199, 89, 0.12);
+            --orange: #FF9500;
+            --red: #FF3B30;
+            --red-soft: rgba(255, 59, 48, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.84);
+            --radius: 18px;
+            --radius-sm: 12px;
+        }
+
+        body.dark {
+            --bg: #000000;
+            --card: #1C1C1E;
+            --card-sub: #2C2C2E;
+            --text: #F5F5F7;
+            --muted: #98989D;
+            --line: rgba(255, 255, 255, 0.12);
+            --blue: #0A84FF;
+            --blue-soft: rgba(10, 132, 255, 0.18);
+            --green: #30D158;
+            --green-soft: rgba(48, 209, 88, 0.16);
+            --orange: #FF9F0A;
+            --red: #FF453A;
+            --red-soft: rgba(255, 69, 58, 0.18);
+            --nav-bg: rgba(28, 28, 30, 0.86);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+        }
+
+        ::-webkit-scrollbar { width: 0px; height: 0px; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: calc(84px + env(safe-area-inset-bottom));
+            transition: background 0.25s ease, color 0.25s ease;
+            overflow-x: hidden;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--line);
+            padding: 12px 16px;
+        }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            max-width: 1600px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .title-group h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .day-chip {
+            background: var(--blue-soft);
+            color: var(--blue);
+            font-size: 0.74rem;
+            padding: 3px 9px;
+            border-radius: 99px;
+            font-weight: 700;
+        }
+        .title-sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+
+        .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .icon-btn {
+            background: var(--card-sub);
+            color: var(--text);
+            border: none;
+            height: 35px;
+            padding: 0 11px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .lang-btn {
+            background: var(--blue-soft);
+            color: var(--blue);
+            font-weight: 700;
+        }
+
+        .summary-banner {
+            max-width: 1600px;
+            margin: 12px auto 0;
+            padding: 0 14px;
+        }
+        .rings-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            border: 0.5px solid var(--line);
+        }
+        .metrics-grid {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .metric-item small { display: block; font-size: 0.71rem; color: var(--muted); margin-bottom: 2px; }
+        .metric-item strong { font-size: 1.03rem; font-weight: 700; }
+
+        .segmented {
+            display: inline-flex;
+            background: var(--card-sub);
+            padding: 3px;
+            border-radius: 11px;
+        }
+        .segmented button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            padding: 6px 13px;
+            border-radius: 9px;
+            font-size: 0.79rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .segmented button.active {
+            background: var(--card);
+            color: var(--text);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        }
+
+        .workspace {
+            max-width: 1600px;
+            margin: 14px auto;
+            padding: 0 14px;
+        }
+        .panel-view { display: none; }
+        .panel-view.active { display: block; }
+
+        @media (min-width: 1100px) {
+            body { padding-bottom: 30px; }
+            .bottom-nav { display: none !important; }
+            .workspace {
+                display: grid;
+                grid-template-columns: 1.38fr 1fr 395px;
+                gap: 18px;
+                align-items: start;
+            }
+            .panel-view { display: block !important; }
+            #view-tools { margin-top: 16px; }
+            .desktop-mid-stack { display: flex; flex-direction: column; gap: 16px; }
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 0.5px solid var(--line);
+        }
+        .card-alert {
+            border: 1px solid rgba(255, 59, 48, 0.35);
+            background: linear-gradient(180deg, var(--red-soft), var(--card) 55%);
+        }
+        .section-label {
+            font-size: 0.81rem;
+            font-weight: 700;
+            color: var(--muted);
+            margin: 6px 4px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ios-check {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--muted);
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: 0.18s;
+        }
+        .ios-check:checked {
+            background: var(--green);
+            border-color: var(--green);
+        }
+        .ios-check:checked::after {
+            content: '✓';
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -52%);
+        }
+
+        .meal-summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .meal-main-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            flex: 1;
+            min-width: 0;
+        }
+        .meal-titles { flex: 1; min-width: 0; }
+        .meal-time-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.74rem;
+            color: var(--muted);
+            margin-bottom: 2px;
+            flex-wrap: wrap;
+        }
+        .meal-name-preview {
+            font-size: 0.93rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .meal-done .meal-name-preview {
+            text-decoration: line-through;
+            color: var(--muted);
+        }
+        .meal-pills {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .pill {
+            padding: 4px 9px;
+            border-radius: 8px;
+            font-size: 0.73rem;
+            font-weight: 600;
+            background: var(--card-sub);
+            color: var(--text);
+        }
+        .pill-pro { color: var(--blue); background: var(--blue-soft); }
+        .chevron { font-size: 0.8rem; color: var(--muted); transition: transform 0.2s; }
+        .card.expanded .chevron { transform: rotate(180deg); }
+
+        .meal-body {
+            display: none;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 0.5px solid var(--line);
+        }
+        .card.expanded .meal-body { display: block; }
+
+        .sub-bar-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+        .chips-scroll {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+        .chip-btn {
+            border: none;
+            background: var(--card-sub);
+            color: var(--muted);
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .chip-btn.active { background: var(--blue); color: #fff; }
+        .chip-carb.active { background: var(--text); color: var(--bg); }
+
+        .clean-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.81rem;
+            margin: 6px 0 10px;
+        }
+        .clean-table th {
+            text-align: start;
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-weight: 500;
+            padding: 6px 4px;
+            border-bottom: 0.5px solid var(--line);
+        }
+        .clean-table td {
+            text-align: start;
+            padding: 8px 4px;
+            border-bottom: 0.5px solid var(--line);
+        }
+        .clean-table tr:last-child td { border-bottom: none; }
+
+        .note-box {
+            background: var(--card-sub);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .med-inline {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--green-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.81rem;
+        }
+
+        .water-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        @media (max-width: 430px) { .water-grid { grid-template-columns: repeat(3, 1fr); } }
+        .water-pill {
+            border: none;
+            background: var(--card-sub);
+            color: var(--muted);
+            padding: 9px 4px;
+            border-radius: 11px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .water-pill.active { background: var(--blue); color: #fff; }
+
+        .gym-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 11px 0;
+            border-bottom: 0.5px solid var(--line);
+        }
+        .gym-item:last-child { border-bottom: none; }
+        .gym-stepper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--card-sub);
+            padding: 4px;
+            border-radius: 11px;
+        }
+        .step-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: none;
+            background: var(--card);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .inp {
+            background: var(--card-sub);
+            color: var(--text);
+            border: 0.5px solid var(--line);
+            padding: 9px 11px;
+            border-radius: 11px;
+            font-size: 0.84rem;
+            outline: none;
+        }
+
+        .chat-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 0.5px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 230px);
+            min-height: 480px;
+            overflow: hidden;
+        }
+        .chat-top {
+            padding: 12px 15px;
+            border-bottom: 0.5px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            display: inline-block;
+            margin-inline-end: 5px;
+        }
+        .status-dot.online { background: var(--green); }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bubble {
+            max-width: 86%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+            line-height: 1.55;
+        }
+        .bubble-ai {
+            background: var(--card-sub);
+            color: var(--text);
+            align-self: flex-start;
+        }
+        .bubble-user {
+            background: var(--blue);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-prompts {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 8px 12px;
+            border-top: 0.5px solid var(--line);
+        }
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+            padding: 10px 12px;
+            border-top: 0.5px solid var(--line);
+        }
+        .chat-input-row input { flex: 1; border-radius: 99px; padding: 10px 15px; }
+        .send-round {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-top: 0.5px solid var(--line);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+        }
+        .nav-tab {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+        .nav-tab span.ico { font-size: 1.2rem; }
+        .nav-tab.active { color: var(--blue); }
+
+        .btn-full {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-blue { background: var(--blue); color: #fff; }
+        .btn-green { background: var(--green); color: #fff; }
+        .btn-sub { background: var(--card-sub); color: var(--text); }
+
+        body.readonly-coach .hide-for-coach { display: none !important; }
+        body.readonly-coach .meal-body { display: block !important; }
+
+        @media print {
+            .bottom-nav, .hide-for-coach, #view-agent { display: none !important; }
+            .panel-view, .meal-body { display: block !important; }
+            body { background: #fff; color: #000; padding: 0; }
+            .card { break-inside: avoid; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <div class="header-row">
+        <div class="title-group">
+            <h1>
+                <span id="uiAppTitle">خطة الـ 60 يوم</span>
+                <span class="day-chip" id="dayBadge">يوم 1 / 60</span>
+            </h1>
+            <div class="title-sub" id="uiAppSub">79.3kg • عضلات 34.7kg • زيرو قمح أو جبن أو خيار</div>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn lang-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
+            <button class="icon-btn" id="rawBtn" onclick="toggleRawMode()">⚖️ مطبوخ</button>
+            <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀️ نهاري</button>
+        </div>
+    </div>
+</header>
+
+<section class="summary-banner">
+    <div class="rings-card">
+        <div class="metrics-grid">
+            <div class="metric-item">
+                <small id="lblCal">السعرات</small>
+                <strong id="sumCal" style="color:var(--orange)">0</strong>
+            </div>
+            <div class="metric-item">
+                <small id="lblPro">البروتين</small>
+                <strong id="sumPro" style="color:var(--blue)">0g</strong>
+            </div>
+            <div class="metric-item">
+                <small id="lblCarb">الكارب</small>
+                <strong id="sumCarb" style="color:var(--green)">0g</strong>
+            </div>
+            <div class="metric-item">
+                <small id="lblWater">المياه</small>
+                <strong id="sumWater">0 / 3L</strong>
+            </div>
+            <div class="metric-item hide-for-coach">
+                <small id="lblProg">إنجاز اليوم</small>
+                <strong id="sumPct">0%</strong>
+            </div>
+        </div>
+
+        <div class="segmented hide-for-coach">
+            <button id="segWorkout" class="active" onclick="setDayType('workout')">🏋️‍♂️ تمرين</button>
+            <button id="segRest" onclick="setDayType('rest')">🛋️ راحة</button>
+        </div>
+    </div>
+</section>
+
+<main class="workspace">
+
+    <!-- 1. قسم اليوم -->
+    <section id="view-today" class="panel-view active">
+        <div class="section-label">
+            <span id="lblDailyHeader">الجدول اليومي (اضغط على الوجبة للتفاصيل والبدائل)</span>
+            <button class="chip-btn hide-for-coach" id="btnResetDay" onclick="resetDaily()">تصفير اليوم</button>
+        </div>
+
+        <!-- دواء قبل الفطار مثبت في القمة -->
+        <div class="card card-alert" id="preMedCard">
+            <div class="meal-summary-row" style="cursor:default;">
+                <div class="meal-main-info">
+                    <input type="checkbox" class="ios-check hide-for-coach" id="chk_med_pre" onchange="toggleTask('chk_med_pre')">
+                    <div class="meal-titles">
+                        <div class="meal-time-row">
+                            <strong style="color:var(--red)" id="uiPreMedTime">08:30 ص • قبل الفطار بـ 30 دقيقة</strong>
+                            <span class="pill" id="tavanicBadge" style="color:var(--red)">5 أيام</span>
+                        </div>
+                        <div class="meal-name-preview" id="uiPreMedTitle">💊 قرص واحد Tavanic 500 مع كوب مياه كبير</div>
+                        <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;" id="uiPreMedNote">
+                            افصل أي ألبان أو زبادي أو معادن ساعتين، وخفف أوزان الجيم (50-60%) لحماية الأوتار.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- عداد المياه -->
+        <div class="card hide-for-coach">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.84rem; font-weight:600;">
+                <span id="uiWaterTitle">💧 شرب المياه (3 لتر لطرد أملاح Urates+)</span>
+                <span style="font-size:0.73rem; color:var(--muted);" id="uiWaterHint">بعيد عن الوجبات</span>
+            </div>
+            <div class="water-grid" id="waterGrid"></div>
+        </div>
+
+        <!-- قائمة الوجبات -->
+        <div id="mealsList"></div>
+    </section>
+
+    <!-- 2. العمود الأوسط: الجيم + المشاركة والأدوات -->
+    <div class="desktop-mid-stack">
+        <section id="view-gym" class="panel-view">
+            <div class="section-label">
+                <span id="lblGymHeader">تمارين الـ Bro Split وتطور الأوزان</span>
+                <span id="tendonTag" style="color:var(--red); font-size:0.74rem;">⚠️ أوزان خفيفة مع Tavanic</span>
+            </div>
+
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
+                    <select id="gymSplitSel" class="inp" style="flex:1; font-weight:600;" onchange="renderGym()"></select>
+                </div>
+                <div id="gymList"></div>
+
+                <div class="hide-for-coach" style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">
+                    <input type="text" id="newGymName" class="inp" placeholder="تمرين جديد..." style="flex:1; min-width:130px;">
+                    <input type="number" id="newGymW" class="inp" placeholder="kg" style="width:70px;">
+                    <input type="text" id="newGymR" class="inp" placeholder="3x10" style="width:75px;">
+                    <button class="icon-btn" style="background:var(--blue); color:#fff;" id="btnAddEx" onclick="addGymEx()">+ أضف</button>
+                </div>
+            </div>
+
+            <div class="card hide-for-coach">
+                <div style="font-weight:700; font-size:0.88rem; margin-bottom:10px;" id="lblWeightTracker">📉 سجل وزن الجسم وراحة الهضم</div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+                    <input type="number" step="0.1" id="wLogInp" class="inp" placeholder="kg" style="width:100px;">
+                    <select id="gutLogInp" class="inp" style="flex:1;"></select>
+                    <button class="icon-btn" style="background:var(--blue); color:#fff;" id="btnSaveWeight" onclick="addWeightLog()">حفظ</button>
+                </div>
+                <div id="wLogsBox" style="font-size:0.79rem; color:var(--muted);"></div>
+            </div>
+        </section>
+
+        <!-- 4. المشاركة الآمنة والأدوات -->
+        <section id="view-tools" class="panel-view">
+            <div class="section-label"><span id="lblShareHeader">📤 مشاركة آمنة للدكتور وكابتن الجيم</span></div>
+            <div class="card hide-for-coach">
+                <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.5;" id="uiShareDesc">
+                    يرسل خطتك باللغة المعروضة حالياً (عربي أو English) بدون مفتاح الـ API وبدون محادثاتك الخاصة:
+                </p>
+                <button class="btn-full btn-green" id="btnShareWA" onclick="shareWhatsAppSummary()">📲 إرسال ملخص الخطة على واتساب</button>
+                <button class="btn-full btn-blue" id="btnShareHTML" onclick="downloadSafeCoachHTML()">📄 تحميل ملف مراجعة نظيف (للدكتور/الكابتن)</button>
+                <button class="btn-full btn-sub" id="btnSharePDF" onclick="window.print()">🖨️ حفظ الخطة كملف PDF</button>
+            </div>
+
+            <div class="section-label"><span id="lblCheckerHeader">🔍 كاشف الأكل والكافيهات + علب الزنقات</span></div>
+            <div class="card">
+                <input type="text" id="foodQuery" class="inp" style="width:100%; margin-bottom:10px;" oninput="renderFoodSearch()">
+                <div id="foodResults" style="max-height:180px; overflow-y:auto; font-size:0.8rem;"></div>
+            </div>
+
+            <div class="card">
+                <div style="font-weight:700; font-size:0.86rem; margin-bottom:8px;" id="uiEmergencyTitle">🥡 علب الزنقات في التلاجة (4 أيام بدون خيار أو جبن)</div>
+                <div class="note-box" style="margin-bottom:8px;" id="uiEmerg1"></div>
+                <div class="note-box" id="uiEmerg2"></div>
+            </div>
+
+            <div class="card hide-for-coach">
+                <div style="font-weight:700; font-size:0.86rem; margin-bottom:8px;" id="uiSettingsTitle">⚙️ تاريخ بداية الكورس والنسخ الاحتياطي</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
+                    <span style="font-size:0.8rem;" id="uiStartLbl">تاريخ أول يوم في الـ 60 يوم:</span>
+                    <input type="date" id="startInp" class="inp" onchange="setStartDate(this.value)">
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-full btn-sub" style="margin:0;" id="btnBackupOut" onclick="exportSafeBackup()">📥 حفظ بياناتي</button>
+                    <label class="btn-full btn-sub" style="margin:0; cursor:pointer;">
+                        <span id="btnBackupIn">📤 استرجاع</span>
+                        <input type="file" accept=".json" style="display:none" onchange="importBackup(event)">
+                    </label>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 3. المساعد الذكي بكامل القوة والسياق -->
+    <section id="view-agent" class="panel-view hide-for-coach">
+        <div class="section-label">
+            <span id="lblAgentHeader">المساعد الذكي الشامل (Full Context AI)</span>
+            <button class="chip-btn" id="btnCopySync" onclick="copySyncForMainGemini()">📋 نسخ ملخصي</button>
+        </div>
+
+        <div class="chat-card">
+            <div class="chat-top">
+                <div style="font-size:0.82rem; font-weight:700;">
+                    <span class="status-dot" id="aiDot"></span>
+                    <span id="aiStatusText"></span>
+                </div>
+                <button class="chip-btn" id="btnApiKey" onclick="toggleKeyBox()">🔑 المفتاح</button>
+            </div>
+
+            <div id="keyBox" style="display:none; padding:12px; background:var(--card-sub); border-bottom:0.5px solid var(--line); font-size:0.78rem;">
+                <div style="margin-bottom:6px;" id="uiKeyNote">ضع مفتاح Gemini API (يعمل بكامل القوة والسياق بدون تقليص للتوكنز، ويُحفظ محلياً على جهازك فقط):</div>
+                <div style="display:flex; gap:6px;">
+                    <input type="password" id="apiKeyField" class="inp" style="flex:1; background:var(--card);" placeholder="AIzaSy...">
+                    <button class="icon-btn" style="background:var(--blue); color:#fff;" onclick="saveGeminiKey()">OK</button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatFeed"></div>
+
+            <div class="chat-prompts" id="quickPromptsBar"></div>
+
+            <div class="chat-input-row">
+                <input type="text" id="chatInp" class="inp" onkeydown="if(event.key==='Enter') handleSend()">
+                <button class="send-round" onclick="handleSend()">↑</button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<nav class="bottom-nav hide-for-coach">
+    <button class="nav-tab active" onclick="switchMobileTab('view-today', this)">
+        <span class="ico">☀️</span><span id="navToday">اليوم</span>
+    </button>
+    <button class="nav-tab" onclick="switchMobileTab('view-gym', this)">
+        <span class="ico">🏋️‍♂️</span><span id="navGym">الجيم</span>
+    </button>
+    <button class="nav-tab" onclick="switchMobileTab('view-agent', this)">
+        <span class="ico">✨</span><span id="navAI">المساعد AI</span>
+    </button>
+    <button class="nav-tab" onclick="switchMobileTab('view-tools', this)">
+        <span class="ico">📤</span><span id="navTools">مشاركة وأدوات</span>
+    </button>
+</nav>
+
+<script>
+(function setupPWA() {
+    const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="42" fill="#007AFF"/><text x="96" y="122" font-size="86" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="bold">60</text></svg>`;
+    const iconUrl = 'data:image/svg+xml;base64,' + btoa(iconSvg);
+    const manifest = {
+        name: '60-Day SIBO & Recomp | Amgad',
+        short_name: 'Amgad Plan',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#000000',
+        theme_color: '#000000',
+        icons: [{ src: iconUrl, sizes: '192x192', type: 'image/svg+xml' }]
+    };
+    document.getElementById('pwaManifest').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest)));
+})();
+
+/* قاموس الترجمة الكامل للواجهة AR / EN */
+const I18N = {
+    ar: {
+        appTitle: 'خطة الـ 60 يوم | أمجد',
+        appSub: '28 سنة • 79.3kg • عضلات 34.7kg • زيرو جلوتين أو أجبان أو خيار (علاج SIBO)',
+        langToggle: '🌐 EN',
+        cooked: '⚖️ مطبوخ', raw: '🥩 نيء',
+        dark: '🌙 داكن', light: '☀️ نهاري',
+        cal: 'السعرات', pro: 'البروتين', carb: 'الكارب', water: 'المياه', prog: 'إنجاز اليوم',
+        workout: '🏋️‍♂️ تمرين', rest: '🛋️ راحة',
+        dailyHeader: 'الجدول اليومي (اضغط على الوجبة للتفاصيل والبدائل)',
+        resetDay: 'تصفير اليوم',
+        preMedTime: '08:30 ص • قبل الفطار بـ 30 دقيقة',
+        preMedTitle: '💊 قرص واحد Tavanic 500mg مع كوب مياه كبير',
+        preMedNote: 'تنبيه طبي: افصل أي ألبان أو زبادي أو معادن ساعتين، وخفف أوزان الجيم (50-60%) لحماية الأوتار.',
+        waterTitle: '💧 شرب المياه (3 لتر يومياً لطرد أملاح Urates+)',
+        waterHint: 'قبل الأكل بـ 30 د أو بعده بساعة',
+        mealChoicesLbl: 'اختر الوجبة بالاسم:',
+        carbSwapLbl: 'تبديل مصدر الكارب لنفس السعرات:',
+        thItem: 'الصنف', thWeight: 'الوزن', thCal: 'سعرات', thPro: 'بروتين', thCarb: 'كارب',
+        restSkipped: 'متوقفة تلقائياً في يوم الراحة لزيادة حرق الدهون',
+        activateBtn: 'تفعيل يوم تمرين',
+        gymHeader: 'تمارين الـ Bro Split وتطور الأوزان',
+        tendonWarn: '⚠️ خفف الأوزان (فترة Tavanic)',
+        newExPh: 'تمرين جديد...', addBtn: '+ أضف',
+        weightTracker: '📉 سجل وزن الجسم وراحة الهضم (SIBO)',
+        saveBtn: 'حفظ',
+        gutOpts: ['هضم ممتاز 5/5', 'مرتاح 4/5', 'غازات خفيفة 3/5', 'انتفاخ 2/5'],
+        splits: { chest: 'يوم الصدر (Chest)', back: 'يوم الظهر (Back)', shoulders: 'يوم الكتف (Shoulders)', arms: 'يوم الذراع (Arms)', legs: 'يوم الرجل (Legs)' },
+        shareHeader: '📤 مشاركة آمنة للدكتور وكابتن الجيم',
+        shareDesc: 'يرسل خطتك باللغة المعروضة حالياً (عربي أو English) بدون مفتاح الـ API وبدون محادثاتك الخاصة:',
+        shareWA: '📲 إرسال ملخص الخطة على واتساب',
+        shareHTML: '📄 تحميل ملف مراجعة نظيف (للدكتور/الكابتن)',
+        sharePDF: '🖨️ حفظ الخطة كملف PDF',
+        checkerHeader: '🔍 كاشف الجلوتين والـ SIBO + علب الزنقات',
+        searchPh: 'ابحث: بريل، شوفان، طحينة، دارك شوكليت، لوتس...',
+        emergTitle: '🥡 علب الزنقات في التلاجة (تعيش 4 أيام - بدون خيار أو جبن)',
+        emerg1: '<strong>1. علبة التونة المكسيكية الجاهزة:</strong> 2 علبة تونة مصفاة ومغسولة بخل وليمون + 150g ريد بينز مشطوفة + 100g ذرة حلوة + 100g مشروم + فلفل ألوان + مايونيز لايت ومسطردة (تؤكل بالكابوتشا فوراً).',
+        emerg2: '<strong>2. سلطة الفراخ الباردة (Deli Chicken):</strong> 350g مكعبات فراخ مستوية + ذرة حلوة + مشروم شرائح + فلفل رومي + مايونيز لايت ومسطردة.',
+        settingsTitle: '⚙️ تاريخ بداية الكورس والنسخ الاحتياطي',
+        startLbl: 'تاريخ أول يوم في الـ 60 يوم:',
+        backupOut: '📥 حفظ بياناتي', backupIn: '📤 استرجاع',
+        agentHeader: 'المساعد الذكي الشامل (Full Gemini Power)',
+        copySync: '📋 نسخ ملخصي',
+        keyBtn: '🔑 المفتاح',
+        keyNote: 'ضع مفتاح Gemini API (يعمل بكامل القوة والسياق بدون تقليص للتوكنز، ويُحفظ محلياً على جهازك فقط):',
+        aiOnline: 'متصل بـ Gemini 2.5 Flash (كامل السياق)',
+        aiOffline: 'وضع محلي ذكي (اضغط المفتاح لربط Gemini)',
+        chatPh: 'اكتب أي سؤال أو تعديل لمناقشته بعمق...',
+        navToday: 'اليوم', navGym: 'الجيم', navAI: 'المساعد AI', navTools: 'مشاركة وأدوات',
+        prompts: [
+            { label: '🔍 راجع يومي بالتفصيل', q: 'راجع يومي بالتفصيل واسألني عن التزامي بالوجبات والأدوية والهضم النهاردة' },
+            { label: '🔄 رشحلي تبديل للوجبات', q: 'اقترح عليا تبديل في وجبات بكرة من اختياراتي عشان مزهقش وقولي الماكروز' },
+            { label: '💊 خريطة أدويتي النهاردة', q: 'اشرحلي خريطة أدويتي النهاردة بالمواعيد والتنبيهات الطبية' },
+            { label: '🏋️‍♂️ خطة تمرين النهاردة', q: 'راجع أوزاني في التمرين وقولي ألعب إزاي النهاردة لحماية العضلات والأوتار' }
+        ]
+    },
+    en: {
+        appTitle: '60-Day SIBO & Recomp Plan | Amgad',
+        appSub: '28yo • 79.3kg • 34.7kg Muscle Mass • Gluten-Free, Dairy/Cheese-Free, No Cucumber',
+        langToggle: '🌐 عربي',
+        cooked: '⚖️ Cooked Wt', raw: '🥩 Raw Wt',
+        dark: '🌙 Dark', light: '☀️ Light',
+        cal: 'Calories', pro: 'Protein', carb: 'Carbs', water: 'Water', prog: 'Daily Goal',
+        workout: '🏋️‍♂️ Workout Day', rest: '🛋️ Rest Day',
+        dailyHeader: 'Daily Schedule (Tap any meal for macros & named swaps)',
+        resetDay: 'Reset Day',
+        preMedTime: '08:30 AM • 30 min Before Breakfast',
+        preMedTitle: '💊 Tavanic 500mg (Levofloxacin) — 1 Tablet with water',
+        preMedNote: 'Medical Alert: Separate calcium/dairy/minerals by 2 hours. Reduce gym loads to 50–60% during the 5-day course to protect tendons.',
+        waterTitle: '💧 Daily Hydration (3.0 Liters to flush Urates+)',
+        waterHint: 'Drink 30m before or 1h after meals',
+        mealChoicesLbl: 'Select Dish Option:',
+        carbSwapLbl: 'Instant Iso-Caloric Carb Swap:',
+        thItem: 'Ingredient', thWeight: 'Weight', thCal: 'kcal', thPro: 'Protein', thCarb: 'Carbs',
+        restSkipped: 'Automatically paused on Rest Days to maximize fat loss',
+        activateBtn: 'Switch to Workout Day',
+        gymHeader: 'Bro Split Progression & Gym Log',
+        tendonWarn: '⚠️ Light Loads (Tavanic Tendon Safety)',
+        newExPh: 'New exercise...', addBtn: '+ Add',
+        weightTracker: '📉 Body Weight & SIBO Gut Comfort Log',
+        saveBtn: 'Save',
+        gutOpts: ['Excellent Digestion 5/5', 'Comfortable 4/5', 'Mild Gas 3/5', 'Bloated 2/5'],
+        splits: { chest: 'Chest Day', back: 'Back Day', shoulders: 'Shoulders Day', arms: 'Arms Day', legs: 'Legs Day' },
+        shareHeader: '📤 Safe Coach / Doctor Review Export',
+        shareDesc: 'Exports your plan in the active language (English or Arabic) completely stripped of your API Key & private chats:',
+        shareWA: '📲 Send Plan Summary via WhatsApp',
+        shareHTML: '📄 Download Clean Review HTML (For Doctor / Coach)',
+        sharePDF: '🖨️ Print / Save Plan as PDF',
+        checkerHeader: '🔍 SIBO & Gluten Food Checker + Prep Kits',
+        searchPh: 'Search food: malt, oats, tahini, dark chocolate, sauce...',
+        emergTitle: '🥡 Fridge Grab-&-Go Prep Kits (Lasts 4 Days — No Cucumber/Cheese)',
+        emerg1: '<strong>1. Mexican Tuna Prep Box:</strong> 2 drained & vinegar-rinsed tuna cans + 150g rinsed red kidney beans + 100g sweet corn + 100g sliced mushrooms + bell peppers + light mayo & yellow mustard (eat with iceberg lettuce wraps).',
+        emerg2: '<strong>2. Cold Deli Chicken Salad Box:</strong> 350g cooked diced chicken breast/thighs + sweet corn + mushrooms + bell peppers + light mayo & mustard.',
+        settingsTitle: '⚙️ 60-Day Start Date & Data Backup',
+        startLbl: 'Day 1 Start Date:',
+        backupOut: '📥 Export Backup', backupIn: '📤 Import',
+        agentHeader: 'Full-Context AI Coach (Gemini 2.5 Flash)',
+        copySync: '📋 Copy Summary',
+        keyBtn: '🔑 API Key',
+        keyNote: 'Enter your free Gemini API Key (Runs with full token capacity & full plan context; stored strictly on this device):',
+        aiOnline: 'Connected to Gemini 2.5 Flash (Unthrottled)',
+        aiOffline: 'Smart Local Mode (Tap API Key for Live Gemini)',
+        chatPh: 'Ask anything or request meal/workout adjustments...',
+        navToday: 'Today', navGym: 'Gym', navAI: 'AI Coach', navTools: 'Share & Tools',
+        prompts: [
+            { label: '🔍 Full Daily Check-in', q: 'Review my full day in detail and ask me about my meals, meds, and gut comfort.' },
+            { label: '🔄 Suggest Meal Swaps', q: 'Suggest tasty swaps from my meal options for tomorrow and show macro impact.' },
+            { label: '💊 Today\'s Med Schedule', q: 'Break down my exact medications for today with timing and safety notes.' },
+            { label: '🏋️‍♂️ Today\'s Workout Plan', q: 'Review my logged gym weights and advise how to train today safely.' }
+        ]
+    }
+};
+
+/* بدائل الكارب ثنائية اللغة بأسماء واضحة */
+const CARB_OPTIONS = {
+    beans_corn: {
+        labelAr: '🫘 ريد بينز + ذرة', labelEn: '🫘 Red Beans + Corn',
+        items: [
+            { nameAr: 'ريد بينز معلبة مشطوفة', nameEn: 'Rinsed Red Kidney Beans', gCooked: 100, gRaw: 100, cal: 115, pro: 8, carb: 20, isCarb: true },
+            { nameAr: 'ذرة صفراء حلوة', nameEn: 'Sweet Corn', gCooked: 70, gRaw: 70, cal: 65, pro: 2, carb: 13, isCarb: true }
+        ]
+    },
+    basmati: {
+        labelAr: '🍚 أرز بسمتي', labelEn: '🍚 Basmati Rice',
+        items: [
+            { nameAr: 'أرز بسمتي سادة', nameEn: 'Steamed Basmati Rice', gCooked: 150, gRaw: 60, cal: 185, pro: 4, carb: 39, isCarb: true }
+        ]
+    },
+    rice_cake: {
+        labelAr: '🍘 رايس كيك GF', labelEn: '🍘 GF Rice Cakes (4 pcs)',
+        items: [
+            { nameAr: 'رايس كيك خالي من الجلوتين (4 قطع)', nameEn: 'Gluten-Free Rice Cakes (4 pcs)', gCooked: 38, gRaw: 38, cal: 150, pro: 3, carb: 31, isCarb: true }
+        ]
+    },
+    potato: {
+        labelAr: '🥔 بطاطس إيرفراير', labelEn: '🥔 Airfryer / Boiled Potato',
+        items: [
+            { nameAr: 'بطاطس مسلوقة أو إيرفراير', nameEn: 'Boiled or Air-Fried Potato', gCooked: 175, gRaw: 200, cal: 160, pro: 3.5, carb: 35, isCarb: true }
+        ]
+    },
+    chickpeas: {
+        labelAr: '🧆 حمص مسلوق', labelEn: '🧆 Boiled Chickpeas',
+        items: [
+            { nameAr: 'حمص مسلوق مشطوف', nameEn: 'Rinsed Boiled Chickpeas', gCooked: 120, gRaw: 120, cal: 180, pro: 9, carb: 29, isCarb: true }
+        ]
+    }
+};
+
+/* الوجبات ثنائية اللغة مع أسماء صريحة لكل أكلة بدل "بديل 1 / بديل 2" */
+const INITIAL_MEALS = [
+    {
+        id: 'breakfast',
+        timeAr: '09:00 ص', timeEn: '09:00 AM',
+        titleAr: 'وجبة الفطار (مع الخس الكابوتشا)', titleEn: 'Breakfast (with Iceberg Lettuce Wraps)',
+        chkId: 'chk_m1', activeOpt: 0, activeCarb: 'beans_corn', expanded: true, medSlot: 'morning',
+        options: [
+            {
+                shortAr: '🍳 بيض مكسيكي بالمشروم', shortEn: '🍳 Mexican Egg & Mushroom Skillet',
+                nameAr: 'طاسة البيض المكسيكي بالسمنة البلدي والمشروم والكابوتشا',
+                nameEn: 'Mexican Egg Skillet in Ghee with Mushrooms, Beans, Corn & Lettuce Wraps',
+                prepAr: 'شوح المشروم في السمنة البلدي دقيقة، أضف الريد بينز والذرة المشطوفين وكمون وبابريكا، ثم 4 بيضات على نار هادئة وتؤكل بلفائف الكابوتشا والمسطردة والكاتشب.',
+                prepEn: 'Sauté sliced mushrooms in natural ghee for 1 min, add rinsed red beans, sweet corn, cumin & paprika, crack 4 whole eggs on low heat, and eat in crisp iceberg lettuce wraps with mustard & ketchup.',
+                items: [
+                    { nameAr: 'بيض كامل (4 بيضات كبيرة)', nameEn: 'Whole Large Eggs (4 eggs)', gCooked: 200, gRaw: 220, cal: 280, pro: 25, carb: 2 },
+                    { nameAr: 'ريد بينز معلبة مشطوفة', nameEn: 'Rinsed Red Kidney Beans', gCooked: 100, gRaw: 100, cal: 115, pro: 8, carb: 20, isCarb: true },
+                    { nameAr: 'ذرة صفراء حلوة', nameEn: 'Sweet Corn', gCooked: 70, gRaw: 70, cal: 65, pro: 2, carb: 13, isCarb: true },
+                    { nameAr: 'مشروم شرائح + ورق كابوتشا', nameEn: 'Sliced Mushrooms + Iceberg Lettuce', gCooked: 80, gRaw: 80, cal: 18, pro: 2, carb: 2 },
+                    { nameAr: 'سمنة بلدي (6g) + مسطردة وكاتشب (30g)', nameEn: 'Natural Ghee (6g) + Mustard & Heinz Ketchup (30g)', gCooked: 36, gRaw: 36, cal: 82, pro: 0.5, carb: 5 }
+                ]
+            },
+            {
+                shortAr: '🥩 بيض باللحمة المفرومة', shortEn: '🥩 Minced Beef & Eggs Skillet',
+                nameAr: 'طاسة البيض باللحمة المفرومة المتشوحة والكابوتشا',
+                nameEn: 'Sautéed Lean Minced Beef & Whole Eggs Skillet with Lettuce Wraps',
+                prepAr: 'سخن 55g لحمة مفرومة متشوحة في السمنة البلدي وافقش فوقها 3 بيضات مع الكابوتشا والكارب المختار.',
+                prepEn: 'Warm 55g pre-sautéed lean minced beef in ghee, cook 3 whole eggs on top, serve with lettuce wraps and your selected carb source.',
+                items: [
+                    { nameAr: 'بيض كامل (3 بيضات)', nameEn: 'Whole Large Eggs (3 eggs)', gCooked: 150, gRaw: 165, cal: 210, pro: 19, carb: 1.5 },
+                    { nameAr: 'لحمة مفرومة حمراء متشوحة (10% دهن)', nameEn: 'Cooked Lean Minced Beef (10% fat)', gCooked: 55, gRaw: 75, cal: 130, pro: 14, carb: 0 },
+                    { nameAr: 'ريد بينز معلبة مشطوفة', nameEn: 'Rinsed Red Kidney Beans', gCooked: 100, gRaw: 100, cal: 115, pro: 8, carb: 20, isCarb: true },
+                    { nameAr: 'ذرة صفراء حلوة', nameEn: 'Sweet Corn', gCooked: 70, gRaw: 70, cal: 65, pro: 2, carb: 13, isCarb: true },
+                    { nameAr: 'سمنة بلدي + مسطردة + كابوتشا', nameEn: 'Natural Ghee + Mustard + Iceberg Lettuce', gCooked: 20, gRaw: 20, cal: 50, pro: 0, carb: 2 }
+                ]
+            },
+            {
+                shortAr: '🫘 فول بالطحينة و3 بيضات', shortEn: '🫘 Fava Beans, Tahini & 3 Eggs',
+                nameAr: 'فول مدمس سادة بالطحينة والليمون + 3 بيضات وكابوتشا',
+                nameEn: 'Plain Fava Beans (Ful Medames) with 100% Sesame Tahini & 3 Eggs',
+                prepAr: 'فول مدمس مضمون بدون دقيق مهروس بكمون وليمون وطحينة سمسم 100% بجانب 3 بيضات وكابوتشا.',
+                prepEn: 'Plain wheat-free fava beans seasoned with cumin, lemon juice, and pure sesame tahini alongside 3 eggs and lettuce leaves.',
+                items: [
+                    { nameAr: 'بيض كامل (3 بيضات)', nameEn: 'Whole Large Eggs (3 eggs)', gCooked: 150, gRaw: 165, cal: 210, pro: 19, carb: 1.5 },
+                    { nameAr: 'فول مدمس سادة بدون دقيق', nameEn: 'Plain Fava Beans (Gluten-Free)', gCooked: 140, gRaw: 140, cal: 155, pro: 10, carb: 26, isCarb: true },
+                    { nameAr: 'طحينة سمسم 100% (12g) + سمنة (5g)', nameEn: 'Pure Sesame Tahini (12g) + Ghee (5g)', gCooked: 17, gRaw: 17, cal: 115, pro: 2.5, carb: 2 }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'snack1',
+        timeAr: '12:30 م', timeEn: '12:30 PM',
+        titleAr: 'السناك الأول (فاكهة وطاقة الشغل)', titleEn: 'Mid-Day Work Snack',
+        chkId: 'chk_s1', activeOpt: 0, noCarbSwap: true, expanded: false,
+        options: [
+            {
+                shortAr: '🍫 فاكهة ودارك شوكليت', shortEn: '🍫 Fresh Fruit & 70% Dark Choc',
+                nameAr: 'ثمرة فاكهة فريش + دارك شوكليت 70% مع القهوة',
+                nameEn: 'Fresh Fruit + 70% Dark Chocolate Squares with Black Coffee',
+                prepAr: 'سناك عملي خفيف ومسموح تماماً بدون جلوتين.',
+                prepEn: 'Clean, portable work snack; 100% gluten-free and SIBO-friendly.',
+                items: [
+                    { nameAr: 'تفاحة أو جوافة أو برتقالة', nameEn: 'Apple, Guava, or Orange', gCooked: 140, gRaw: 140, cal: 75, pro: 0.5, carb: 19 },
+                    { nameAr: 'دارك شوكليت 70%+ (مكعبين)', nameEn: '70%+ Dark Chocolate (2 squares)', gCooked: 22, gRaw: 22, cal: 125, pro: 2, carb: 9 }
+                ]
+            },
+            {
+                shortAr: '🥜 سوداني/لوز سادة وفاكهة', shortEn: '🥜 Plain Nuts & Fresh Fruit',
+                nameAr: 'سوداني أو لوز سادة (بدون دقيق) + ثمرة فاكهة',
+                nameEn: 'Plain Dry-Roasted Peanuts or Almonds + Fresh Fruit',
+                prepAr: 'تأكد أن المكسرات محمصة سادة بدون عجينة دقيق وملح.',
+                prepEn: 'Ensure nuts are plain/dry-roasted without wheat-flour salt coating.',
+                items: [
+                    { nameAr: 'سوداني أو لوز سادة', nameEn: 'Plain Peanuts or Almonds', gCooked: 25, gRaw: 25, cal: 145, pro: 6, carb: 4 },
+                    { nameAr: 'ثمرة فاكهة متوسطة', nameEn: 'Medium Fresh Fruit', gCooked: 130, gRaw: 130, cal: 70, pro: 0.5, carb: 17 }
+                ]
+            },
+            {
+                shortAr: '🥣 زبادي سادة وفاكهة', shortEn: '🥣 Plain Yogurt & Fruit',
+                nameAr: 'علبة زبادي سادة + ثمرة فاكهة',
+                nameEn: 'Plain Natural Yogurt Cup + Fresh Fruit',
+                prepAr: 'مفصول بأكثر من 4 ساعات عن قرص Tavanic الصباحي فلا يؤثر على امتصاصه.',
+                prepEn: 'Spaced 4+ hours away from morning Tavanic 500mg so calcium does not interfere.',
+                items: [
+                    { nameAr: 'علبة زبادي سادة', nameEn: 'Plain Yogurt', gCooked: 170, gRaw: 170, cal: 105, pro: 6, carb: 8 },
+                    { nameAr: 'ثمرة فاكهة', nameEn: 'Fresh Fruit Serving', gCooked: 110, gRaw: 110, cal: 85, pro: 1, carb: 21 }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'lunch',
+        timeAr: '03:30 م', timeEn: '03:30 PM',
+        titleAr: 'وجبة الغداء (علبة الـ Meal Prep)', titleEn: 'Main Lunch (Juicy Pan-Sautéed Meal Prep)',
+        chkId: 'chk_m2', activeOpt: 0, activeCarb: 'basmati', expanded: false,
+        options: [
+            {
+                shortAr: '🍗 شاورما فراخ وبسمتي', shortEn: '🍗 Chicken Shawarma Bowl',
+                nameAr: 'شاورما فراخ متشوحة بالسمنة البلدي والمشروم + أرز بسمتي بالبسلة والجزر',
+                nameEn: 'Pan-Sautéed Chicken Shawarma in Ghee + Basmati Rice with Peas & Carrots',
+                prepAr: 'شوح الفراخ مع البصل والفلفل والمشروم في السمنة البلدي وزود ربع كوب ماء ساخن في النهاية لعمل صوص طري فوق الرز البسمتي.',
+                prepEn: 'Pan-sear chicken strips in ghee with onions, bell peppers, mushrooms & spices; splash 1/4 cup hot water at the end for a juicy pan glaze over basmati rice.',
+                items: [
+                    { nameAr: 'صدور/شيش فراخ متشوح', nameEn: 'Sautéed Chicken Breast/Thigh Strips', gCooked: 190, gRaw: 250, cal: 310, pro: 56, carb: 0 },
+                    { nameAr: 'أرز بسمتي مفلفل', nameEn: 'Steamed Basmati Rice', gCooked: 170, gRaw: 70, cal: 215, pro: 4.5, carb: 45, isCarb: true },
+                    { nameAr: 'بسلة وجزر سوتيه + مشروم', nameEn: 'Sautéed Peas, Carrots & Mushrooms', gCooked: 110, gRaw: 110, cal: 65, pro: 3.5, carb: 11 },
+                    { nameAr: 'سمنة بلدي صافي', nameEn: 'Pure Natural Ghee (Cooking Fat)', gCooked: 10, gRaw: 10, cal: 90, pro: 0, carb: 0 },
+                    { nameAr: 'مايونيز لايت (15g) + مسطردة (15g)', nameEn: 'Light Mayo (15g) + Yellow Mustard (15g)', gCooked: 30, gRaw: 30, cal: 48, pro: 0.5, carb: 2.5 }
+                ]
+            },
+            {
+                shortAr: '🥩 لحمة مفرومة بدون صلصة', shortEn: '🥩 Spiced Minced Beef Bowl',
+                nameAr: 'لحمة مفرومة متشوحة بالسمنة والبصل (بدون صلصة طماطم) + أرز بسمتي بالبسلة',
+                nameEn: 'Pan-Sautéed Lean Minced Beef (No Tomato Sauce) + Basmati Rice & Veggies',
+                prepAr: 'متشوحة بالبصل والفلفل والسبع بهارات وربع كوب ماء ساخن بدون أي صلصة مسبكة لسهولة الهضم.',
+                prepEn: 'Sautéed in ghee with grated onion, green pepper, 7-spice blend & splash of hot water (zero heavy tomato paste for easy SIBO digestion).',
+                items: [
+                    { nameAr: 'لحم مفروم أحمر متشوح (10% دهن)', nameEn: 'Sautéed Lean Minced Beef (10% fat)', gCooked: 170, gRaw: 225, cal: 345, pro: 46, carb: 0 },
+                    { nameAr: 'أرز بسمتي مفلفل', nameEn: 'Steamed Basmati Rice', gCooked: 170, gRaw: 70, cal: 215, pro: 4.5, carb: 45, isCarb: true },
+                    { nameAr: 'بسلة وجزر سوتيه + مشروم', nameEn: 'Sautéed Peas, Carrots & Mushrooms', gCooked: 100, gRaw: 100, cal: 60, pro: 3, carb: 10 },
+                    { nameAr: 'سمنة بلدي للتشويح', nameEn: 'Pure Natural Ghee', gCooked: 8, gRaw: 8, cal: 72, pro: 0, carb: 0 },
+                    { nameAr: 'طحينة سمسم 100% بليمون وكمون', nameEn: '100% Sesame Tahini Sauce (Lemon & Cumin)', gCooked: 15, gRaw: 15, cal: 90, pro: 2.5, carb: 3 }
+                ]
+            },
+            {
+                shortAr: '🌮 فاهيتا فراخ بالذرة', shortEn: '🌮 Chicken Fajita & Corn Bowl',
+                nameAr: 'طاسة فاهيتا فراخ بالذرة الحلوة والفلفل الألوان + أرز بسمتي',
+                nameEn: 'Sizzling Chicken Fajita Skillet with Sweet Corn & Bell Peppers + Basmati Rice',
+                prepAr: 'شرائح فراخ متشوحة بفلفل ألوان وذرة حلوة وكمون وبابريكا وليمون.',
+                prepEn: 'Chicken strips sautéed with colorful bell peppers, sweet corn, fajita spices & fresh lime.',
+                items: [
+                    { nameAr: 'شرائح فراخ فاهيتا', nameEn: 'Fajita Chicken Strips', gCooked: 185, gRaw: 245, cal: 300, pro: 54, carb: 0 },
+                    { nameAr: 'أرز بسمتي سادة', nameEn: 'Steamed Basmati Rice', gCooked: 150, gRaw: 60, cal: 190, pro: 4, carb: 40, isCarb: true },
+                    { nameAr: 'فلفل ألوان + ذرة حلوة (40g)', nameEn: 'Bell Peppers + Sweet Corn (40g)', gCooked: 110, gRaw: 110, cal: 65, pro: 2, carb: 13 },
+                    { nameAr: 'سمنة بلدي (10g) + مايونيز ومسطردة', nameEn: 'Natural Ghee (10g) + Light Mayo & Mustard', gCooked: 35, gRaw: 35, cal: 125, pro: 0.5, carb: 2 }
+                ]
+            },
+            {
+                shortAr: '🍋 كبدة بلدي بالثوم والليمون', shortEn: '🍋 Garlic-Lemon Beef Liver',
+                nameAr: 'كبدة بلدي عصافيري بالسمنة والثوم والليمون (بدون ردة!) + أرز بسمتي',
+                nameEn: 'Alexandrian Beef Liver Sautéed in Ghee, Garlic & Lemon (No Wheat Bran) + Basmati',
+                prepAr: 'تشويح 5 دقائق في السمنة البلدي مع الثوم والفلفل والكمون وعصير الليمون (بدون ردة أو دقيق).',
+                prepEn: 'Quick 5-min sauté in ghee with garlic, green peppers, cumin & lemon juice (strictly no wheat bran coating).',
+                items: [
+                    { nameAr: 'كبدة بلدي صافية متشوحة', nameEn: 'Sautéed Pure Beef Liver', gCooked: 185, gRaw: 250, cal: 315, pro: 50, carb: 7 },
+                    { nameAr: 'أرز بسمتي سادة', nameEn: 'Steamed Basmati Rice', gCooked: 170, gRaw: 70, cal: 215, pro: 4.5, carb: 45, isCarb: true },
+                    { nameAr: 'سمنة بلدي (10g) + طحينة خام (15g)', nameEn: 'Natural Ghee (10g) + Pure Tahini (15g)', gCooked: 25, gRaw: 25, cal: 180, pro: 2.5, carb: 3 }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'preworkout',
+        timeAr: '06:00 م', timeEn: '06:00 PM',
+        titleAr: 'وجبة قبل التمرين (موز + بلح + عسل)', titleEn: 'Pre-Workout Fuel (Banana + Dates + Honey)',
+        chkId: 'chk_s2', activeOpt: 0, noCarbSwap: true, workoutOnly: true, expanded: false,
+        options: [
+            {
+                shortAr: '⚡ موز + بلح + عسل نحل', shortEn: '⚡ Banana + Dates + Honey',
+                nameAr: 'موزة + 3 بلحات + ملعقة عسل نحل + قهوة سادة',
+                nameEn: 'Ripe Banana + 3 Dates + 1 Tbsp Pure Honey + Espresso',
+                prepAr: 'قبل الجيم بـ 35 دقيقة لطاقة فورية سريعة الامتصاص بدون ثقل في المعدة.',
+                prepEn: 'Taken 35 min pre-workout for rapid glycemic energy and muscle pump with zero gut heaviness.',
+                items: [
+                    { nameAr: 'موزة متوسطة', nameEn: 'Medium Ripe Banana', gCooked: 115, gRaw: 115, cal: 102, pro: 1.3, carb: 26 },
+                    { nameAr: 'بلح / تمر (3 حبات)', nameEn: 'Dates (3 pitted dates)', gCooked: 30, gRaw: 30, cal: 84, pro: 0.7, carb: 22 },
+                    { nameAr: 'عسل نحل طبيعي (ملعقة كبيرة)', nameEn: 'Pure Natural Honey (1 tbsp)', gCooked: 15, gRaw: 15, cal: 46, pro: 0, carb: 12 }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'dinner',
+        timeAr: '09:00 م', timeEn: '09:00 PM',
+        titleAr: 'وجبة العشاء والاستشفاء العضلي', titleEn: 'Post-Workout Dinner & Recovery',
+        chkId: 'chk_m3', activeOpt: 0, activeCarb: 'beans_corn', expanded: false, medSlot: 'evening',
+        options: [
+            {
+                shortAr: '🐟 بولة تونة مكسيكية بالكابوتشا', shortEn: '🐟 Mexican Tuna Salad Bowl',
+                nameAr: 'بولة التونة المكسيكية بالمايونيز اللايت والمسطردة وورق الكابوتشا',
+                nameEn: 'Mexican Solid Tuna Bowl with Red Beans, Sweet Corn, Light Mayo & Lettuce Wraps',
+                prepAr: 'تونة مصفاة ومغسولة بخل وليمون مع الريد بينز والذرة والمايونيز والمسطردة وورق الكابوتشا (بدون خيار وبدون أجبان).',
+                prepEn: 'Drained & lemon-rinsed solid tuna tossed with red beans, sweet corn, light mayo, mustard & crisp iceberg lettuce (no cucumber, no dairy).',
+                items: [
+                    { nameAr: 'علبة تونة قطعة واحدة مصفاة', nameEn: 'Drained Solid Tuna Can', gCooked: 135, gRaw: 135, cal: 155, pro: 34, carb: 0 },
+                    { nameAr: 'ريد بينز معلبة مشطوفة', nameEn: 'Rinsed Red Kidney Beans', gCooked: 85, gRaw: 85, cal: 98, pro: 7, carb: 17, isCarb: true },
+                    { nameAr: 'ذرة صفراء حلوة', nameEn: 'Sweet Corn', gCooked: 60, gRaw: 60, cal: 55, pro: 1.8, carb: 11, isCarb: true },
+                    { nameAr: 'مايونيز لايت (15g) + مسطردة (15g) + كابوتشا', nameEn: 'Light Mayo (15g) + Mustard (15g) + Lettuce', gCooked: 70, gRaw: 70, cal: 52, pro: 1, carb: 3 }
+                ]
+            },
+            {
+                shortAr: '🥗 سلطة فراخ باردة (Deli)', shortEn: '🥗 Cold Deli Chicken Bowl',
+                nameAr: 'سلطة الفراخ الباردة الجاهزة (Deli Chicken) مع الكابوتشا',
+                nameEn: 'Cold Deli Diced Chicken Bowl with Corn, Beans, Mushrooms & Lettuce',
+                prepAr: 'وجبة باردة جاهزة في الثلاجة لوقت الزنقة وبعد الجيم.',
+                prepEn: 'Ready-to-eat chilled high-protein recovery bowl straight from the fridge.',
+                items: [
+                    { nameAr: 'مكعبات فراخ مستوية باردة', nameEn: 'Chilled Cooked Chicken Breast Cubes', gCooked: 150, gRaw: 200, cal: 245, pro: 44, carb: 0 },
+                    { nameAr: 'ذرة حلوة + ريد بينز مشطوفة', nameEn: 'Sweet Corn + Rinsed Red Beans', gCooked: 120, gRaw: 120, cal: 130, pro: 7, carb: 24, isCarb: true },
+                    { nameAr: 'مشروم شرائح + مايونيز لايت ومسطردة', nameEn: 'Sliced Mushrooms + Light Mayo & Mustard', gCooked: 80, gRaw: 80, cal: 58, pro: 1.5, carb: 4 }
+                ]
+            }
+        ]
+    }
+];
+
+const INITIAL_GYM = {
+    chest: [
+        { name: 'Smith Machine Incline Press', weight: 60, reps: '3x10' },
+        { name: 'Cable Crossovers', weight: 20, reps: '3x12' },
+        { name: 'Flat Dumbbell Press', weight: 24, reps: '3x10' }
+    ],
+    back: [
+        { name: 'Seated Cable Rows', weight: 55, reps: '3x10' },
+        { name: 'Lat Pulldown', weight: 60, reps: '3x12' },
+        { name: 'One-Arm Dumbbell Row', weight: 26, reps: '3x10' }
+    ],
+    shoulders: [
+        { name: 'Seated Dumbbell Press', weight: 20, reps: '3x10' },
+        { name: 'Cable Lateral Raises', weight: 10, reps: '4x15' },
+        { name: 'Rear Delt Machine', weight: 40, reps: '3x15' }
+    ],
+    arms: [
+        { name: 'Bayesian Biceps Curls', weight: 15, reps: '3x12' },
+        { name: 'Triceps Rope Pushdown', weight: 25, reps: '3x12' },
+        { name: 'Preacher Curl', weight: 30, reps: '3x10' }
+    ],
+    legs: [
+        { name: 'Leg Press', weight: 140, reps: '4x12' },
+        { name: 'Barbell Hip Thrusts', weight: 80, reps: '3x10' },
+        { name: 'Seated Leg Curl', weight: 45, reps: '3x12' }
+    ]
+};
+
+const FOOD_GUIDE = [
+    { nAr: 'بريل / فيروز (شعير)', nEn: 'Birell / Fayrouz (Barley Malt)', sAr: '❌ ممنوع نهائياً', sEn: '❌ Strictly Forbidden', dAr: 'مشروب شعير يحتوي على جلوتين صريح يهيج الـ SIBO.', dEn: 'Barley malt beverage containing direct gluten.' },
+    { nAr: 'أرز بسمتي / أبيض سادة', nEn: 'Basmati / Plain White Rice', sAr: '✅ مسموح 100%', sEn: '✅ 100% Allowed', dAr: 'بدون شعرية نهائياً.', dEn: 'Must be cooked without wheat vermicelli.' },
+    { nAr: 'ريد بينز / ذرة حلوة / مشروم', nEn: 'Canned Red Beans / Sweet Corn / Mushrooms', sAr: '✅ مسموح 100%', sEn: '✅ 100% Allowed', dAr: 'اشطفها بالماء 30 ثانية لتقليل الصوديوم.', dEn: 'Rinse under water for 30s to remove excess sodium.' },
+    { nAr: 'دارك شوكليت 70%+ / عسل نحل', nEn: '70%+ Dark Chocolate / Pure Honey', sAr: '✅ مسموح', sEn: '✅ Allowed', dAr: 'بدون بسكويت أو ويفر.', dEn: 'Plain dark chocolate without wafer or biscuit.' },
+    { nAr: 'لوتس / أوريو / نسكافيه 3×1', nEn: 'Lotus Biscoff / Oreo / 3-in-1 Coffee', sAr: '❌ ممنوع', sEn: '❌ Forbidden', dAr: 'قمح ومشتقات مالت؛ اشرب إسبريسو أو أمريكانو أو عصير فريش.', dEn: 'Contains wheat & malt; stick to espresso, Americano, or fresh juice.' },
+    { nAr: 'مرقة دجاج مكعبات / كفتة الشارع', nEn: 'Bouillon Cubes / Street Kofta & Burgers', sAr: '⚠️ فخ جلوتين', sEn: '⚠️ Hidden Gluten Trap', dAr: 'مخلوطة بنشا قمح وبقسماط.', dEn: 'Contains wheat starch fillers and breadcrumbs.' },
+    { nAr: 'طحينة المطاعم الجاهزة', nEn: 'Restaurant Ready-Made Tahini', sAr: '⚠️ فخ دقيق', sEn: '⚠️ Flour Trap', dAr: 'تُضرب بعيش فينو أو دقيق؛ استخدم طحينة سمسم 100% بالبيت.', dEn: 'Often thickened with bread/flour; use 100% pure sesame tahini at home.' },
+    { nAr: 'سمك أو كبدة مشوية بالردة', nEn: 'Wheat-Bran Crusted Fish or Liver', sAr: '❌ ممنوع', sEn: '❌ Forbidden', dAr: 'الردة قشرة القمح! اطلبها سنجاري زيت وليمون أو بالسمنة.', dEn: 'Bran (Radda) is wheat husk! Order grilled with olive oil & lemon.' }
+];
+
+const API_STORAGE_KEY = 'amgad_private_gemini_key_only';
+const DATA_STORAGE_KEY = 'amgad_bilingual_s23_v2';
+
+let injectedCoachState = window.__COACH_SNAPSHOT__ || null;
+
+let state = injectedCoachState || JSON.parse(localStorage.getItem(DATA_STORAGE_KEY)) || {
+    lang: 'ar',
+    startDate: '2026-10-25',
+    dayType: 'workout',
+    showRaw: false,
+    darkMode: true,
+    checks: {},
+    water: [false, false, false, false, false, false],
+    meals: INITIAL_MEALS,
+    gym: INITIAL_GYM,
+    weightLogs: [{ date: 'Start', weight: 79.3, gut: '4/5' }],
+    chatHistory: []
+};
+
+function isEn() { return state.lang === 'en'; }
+function T() { return I18N[state.lang || 'ar']; }
+
+function saveData() {
+    if (injectedCoachState) return;
+    localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(state));
+    refreshSummary();
+}
+
+function getCourseDay() {
+    const start = new Date(state.startDate + 'T00:00:00');
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diff = Math.floor((today - start) / 86400000);
+    if (diff < 0) return 1;
+    return Math.min(60, diff + 1);
+}
+
+function getMedText(slot, day) {
+    if (isEn()) {
+        if (slot === 'morning') {
+            let arr = ['1 tab <b>Coloverin A</b> (30 days)'];
+            if (day === 1) arr.push('<b style="color:var(--red)">2 tabs Diflucan 50mg</b> (Day 1 loading dose)');
+            else if (day >= 2 && day <= 16) arr.push(`1 tab <b>Diflucan 50mg</b> (Day ${day - 1}/15)`);
+            else if (day >= 17 && day <= 26) arr.push(`1 tab <b>Vermizole 200mg</b> (Day ${day - 16}/10)`);
+            return '09:30 AM Post-Breakfast: ' + arr.join(' + ');
+        }
+        if (slot === 'evening') {
+            if (day === 1) return '09:30 PM Post-Dinner: <b style="color:var(--red)">2 tabs Diflucan 50mg</b> (Day 1 only)';
+            if (day >= 17 && day <= 26) return `09:30 PM Post-Dinner: 1 tab <b>Vermizole 200mg</b> (Day ${day - 16}/10)`;
+            return '09:30 PM Post-Dinner: No evening pills scheduled today ✅';
+        }
+    } else {
+        if (slot === 'morning') {
+            let arr = ['قرص <b>Coloverin A</b> (شهر)'];
+            if (day === 1) arr.push('<b style="color:var(--red)">قرصين (2) Diflucan 50</b> (أول يوم)');
+            else if (day >= 2 && day <= 16) arr.push(`قرص <b>Diflucan 50</b> (${day - 1}/15)`);
+            else if (day >= 17 && day <= 26) arr.push(`قرص <b>Vermizole 200</b> (${day - 16}/10)`);
+            return '09:30 ص بعد الفطار: ' + arr.join(' + ');
+        }
+        if (slot === 'evening') {
+            if (day === 1) return '09:30 م بعد العشاء: <b style="color:var(--red)">قرصين (2) Diflucan 50</b> (أول يوم)';
+            if (day >= 17 && day <= 26) return `09:30 م بعد العشاء: قرص <b>Vermizole 200</b> (${day - 16}/10)`;
+            return '09:30 م بعد العشاء: لا توجد أقراص مسائية اليوم ✅';
+        }
+    }
+    return '';
+}
+
+function applyLanguageUI() {
+    const t = T();
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir = isEn() ? 'ltr' : 'rtl';
+
+    document.getElementById('uiAppTitle').innerText = t.appTitle;
+    document.getElementById('uiAppSub').innerText = t.appSub;
+    document.getElementById('langBtn').innerText = t.langToggle;
+    document.getElementById('rawBtn').innerText = state.showRaw ? t.raw : t.cooked;
+    document.getElementById('themeBtn').innerText = state.darkMode ? t.light : t.dark;
+
+    document.getElementById('lblCal').innerText = t.cal;
+    document.getElementById('lblPro').innerText = t.pro;
+    document.getElementById('lblCarb').innerText = t.carb;
+    document.getElementById('lblWater').innerText = t.water;
+    document.getElementById('lblProg').innerText = t.prog;
+    document.getElementById('segWorkout').innerText = t.workout;
+    document.getElementById('segRest').innerText = t.rest;
+
+    document.getElementById('lblDailyHeader').innerText = t.dailyHeader;
+    document.getElementById('btnResetDay').innerText = t.resetDay;
+    document.getElementById('uiPreMedTime').innerText = t.preMedTime;
+    document.getElementById('uiPreMedTitle').innerText = t.preMedTitle;
+    document.getElementById('uiPreMedNote').innerText = t.preMedNote;
+    document.getElementById('uiWaterTitle').innerText = t.waterTitle;
+    document.getElementById('uiWaterHint').innerText = t.waterHint;
+
+    document.getElementById('lblGymHeader').innerText = t.gymHeader;
+    document.getElementById('tendonTag').innerText = t.tendonWarn;
+    document.getElementById('newGymName').placeholder = t.newExPh;
+    document.getElementById('btnAddEx').innerText = t.addBtn;
+    document.getElementById('lblWeightTracker').innerText = t.weightTracker;
+    document.getElementById('btnSaveWeight').innerText = t.saveBtn;
+
+    const splitSel = document.getElementById('gymSplitSel');
+    const curSplit = splitSel.value || 'chest';
+    splitSel.innerHTML = Object.keys(t.splits).map(k => `<option value="${k}">${t.splits[k]}</option>`).join('');
+    splitSel.value = curSplit;
+
+    document.getElementById('gutLogInp').innerHTML = t.gutOpts.map(o => `<option value="${o}">${o}</option>`).join('');
+
+    document.getElementById('lblShareHeader').innerText = t.shareHeader;
+    document.getElementById('uiShareDesc').innerText = t.shareDesc;
+    document.getElementById('btnShareWA').innerText = t.shareWA;
+    document.getElementById('btnShareHTML').innerText = t.shareHTML;
+    document.getElementById('btnSharePDF').innerText = t.sharePDF;
+    document.getElementById('lblCheckerHeader').innerText = t.checkerHeader;
+    document.getElementById('foodQuery').placeholder = t.searchPh;
+    document.getElementById('uiEmergencyTitle').innerText = t.emergTitle;
+    document.getElementById('uiEmerg1').innerHTML = t.emerg1;
+    document.getElementById('uiEmerg2').innerHTML = t.emerg2;
+    document.getElementById('uiSettingsTitle').innerText = t.settingsTitle;
+    document.getElementById('uiStartLbl').innerText = t.startLbl;
+    document.getElementById('btnBackupOut').innerText = t.backupOut;
+    document.getElementById('btnBackupIn').innerText = t.backupIn;
+
+    document.getElementById('lblAgentHeader').innerText = t.agentHeader;
+    document.getElementById('btnCopySync').innerText = t.copySync;
+    document.getElementById('btnApiKey').innerText = t.keyBtn;
+    document.getElementById('uiKeyNote').innerText = t.keyNote;
+    document.getElementById('chatInp').placeholder = t.chatPh;
+
+    document.getElementById('navToday').innerText = t.navToday;
+    document.getElementById('navGym').innerText = t.navGym;
+    document.getElementById('navAI').innerText = t.navAI;
+    document.getElementById('navTools').innerText = t.navTools;
+
+    document.getElementById('quickPromptsBar').innerHTML = t.prompts.map(p =>
+        `<button class="chip-btn" onclick="quickAsk('${p.q.replace(/'/g, "\\'")}')">${p.label}</button>`
+    ).join('');
+
+    updateAIStatusUI();
+}
+
+function toggleLang() {
+    state.lang = isEn() ? 'ar' : 'en';
+    applyLanguageUI();
+    renderMeals();
+    renderGym();
+    renderFoodSearch();
+    saveData();
+}
+
+function init() {
+    if (injectedCoachState) document.body.classList.add('readonly-coach');
+    applyTheme();
+    document.getElementById('startInp').value = state.startDate;
+    applyLanguageUI();
+    setDayType(state.dayType, true);
+    renderWater();
+    renderMeals();
+    renderGym();
+    renderWeightLogs();
+    renderFoodSearch();
+    renderSavedChat();
+}
+
+function applyTheme() {
+    document.body.classList.toggle('dark', state.darkMode);
+    document.getElementById('metaThemeColor').setAttribute('content', state.darkMode ? '#000000' : '#F5F5F7');
+    if (document.getElementById('themeBtn')) {
+        document.getElementById('themeBtn').innerText = state.darkMode ? T().light : T().dark;
+    }
+}
+
+function toggleTheme() {
+    state.darkMode = !state.darkMode;
+    applyTheme();
+    saveData();
+}
+
+function toggleRawMode() {
+    state.showRaw = !state.showRaw;
+    document.getElementById('rawBtn').innerText = state.showRaw ? T().raw : T().cooked;
+    renderMeals();
+    saveData();
+}
+
+function setDayType(type, skipSave) {
+    state.dayType = type;
+    document.getElementById('segWorkout').classList.toggle('active', type === 'workout');
+    document.getElementById('segRest').classList.toggle('active', type === 'rest');
+    renderMeals();
+    if (!skipSave) saveData();
+}
+
+function switchMobileTab(viewId, btn) {
+    document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderWater() {
+    document.getElementById('waterGrid').innerHTML = ['0.5L', '1.0L', '1.5L', '2.0L', '2.5L', '3.0L'].map((lbl, i) => `
+        <button class="water-pill ${state.water[i] ? 'active' : ''}" onclick="toggleCup(${i})">💧 ${lbl}</button>
+    `).join('');
+}
+
+function toggleCup(i) {
+    state.water[i] = !state.water[i];
+    renderWater();
+    saveData();
+}
+
+function toggleTask(id, ev) {
+    if (ev) ev.stopPropagation();
+    state.checks[id] = !state.checks[id];
+    renderMeals();
+    saveData();
+}
+
+function toggleCardExpand(mIdx) {
+    state.meals[mIdx].expanded = !state.meals[mIdx].expanded;
+    renderMeals();
+}
+
+function selectMealOpt(mIdx, oIdx) {
+    state.meals[mIdx].activeOpt = oIdx;
+    renderMeals();
+    saveData();
+}
+
+function swapCarb(mIdx, key) {
+    const meal = state.meals[mIdx];
+    meal.activeCarb = key;
+    const opt = meal.options[meal.activeOpt];
+    const others = opt.items.filter(i => !i.isCarb);
+    const mult = state.dayType === 'rest' ? 0.78 : 1;
+    const carbs = CARB_OPTIONS[key].items.map(c => ({
+        ...c,
+        gCooked: Math.round(c.gCooked * mult),
+        gRaw: Math.round(c.gRaw * mult),
+        cal: Math.round(c.cal * mult),
+        pro: +(c.pro * mult).toFixed(1),
+        carb: Math.round(c.carb * mult)
+    }));
+    opt.items = [others[0], ...carbs, ...others.slice(1)];
+    renderMeals();
+    saveData();
+}
+
+function renderMeals() {
+    const day = getCourseDay();
+    const t = T();
+    document.getElementById('dayBadge').innerText = isEn() ? `Day ${day} / 60` : `يوم ${day} / 60`;
+    document.getElementById('chk_med_pre').checked = !!state.checks['chk_med_pre'];
+
+    document.getElementById('tavanicBadge').innerText = day <= 5
+        ? (isEn() ? `Day ${day} of 5` : `يوم ${day} من 5`)
+        : (isEn() ? 'Completed ✅' : 'اكتمل ✅');
+    document.getElementById('tendonTag').style.display = day <= 10 ? 'inline' : 'none';
+
+    const box = document.getElementById('mealsList');
+    box.innerHTML = state.meals.map((meal, mIdx) => {
+        const mTitle = isEn() ? (meal.titleEn || meal.titleAr) : meal.titleAr;
+        const mTime = isEn() ? (meal.timeEn || meal.timeAr) : meal.timeAr;
+
+        if (meal.workoutOnly && state.dayType === 'rest') {
+            return `<div class="card" style="opacity:0.68;">
+                <div style="font-size:0.82rem; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span>⏸️ ${mTitle} — ${t.restSkipped}</span>
+                    <button class="chip-btn hide-for-coach" onclick="setDayType('workout')">${t.activateBtn}</button>
+                </div>
+            </div>`;
+        }
+
+        const opt = meal.options[meal.activeOpt];
+        const oName = isEn() ? (opt.nameEn || opt.nameAr) : opt.nameAr;
+        const oPrep = isEn() ? (opt.prepEn || opt.prepAr) : opt.prepAr;
+
+        let c = 0, p = 0, cb = 0;
+        opt.items.forEach(i => { c += +i.cal; p += +i.pro; cb += +i.carb; });
+        const done = !!state.checks[meal.chkId];
+
+        return `
+        <div class="card ${meal.expanded ? 'expanded' : ''} ${done ? 'meal-done' : ''}">
+            <div class="meal-summary-row" onclick="toggleCardExpand(${mIdx})">
+                <div class="meal-main-info">
+                    <input type="checkbox" class="ios-check hide-for-coach" ${done ? 'checked' : ''} onclick="toggleTask('${meal.chkId}', event)">
+                    <div class="meal-titles">
+                        <div class="meal-time-row">
+                            <span>${mTime}</span>
+                            <span>•</span>
+                            <span>${mTitle}</span>
+                        </div>
+                        <div class="meal-name-preview">${oName}</div>
+                    </div>
+                </div>
+                <div class="meal-pills">
+                    <span class="pill">${Math.round(c)} kcal</span>
+                    <span class="pill pill-pro">${Math.round(p)}g P</span>
+                    <span class="chevron">⌄</span>
+                </div>
+            </div>
+
+            <div class="meal-body">
+                ${meal.options.length > 1 ? `
+                <div class="sub-bar-label">${t.mealChoicesLbl}</div>
+                <div class="chips-scroll">
+                    ${meal.options.map((o, oi) => {
+                        const btnTitle = isEn() ? (o.shortEn || o.nameEn) : (o.shortAr || o.nameAr);
+                        return `<button class="chip-btn ${meal.activeOpt === oi ? 'active' : ''}" onclick="selectMealOpt(${mIdx}, ${oi})">${btnTitle}</button>`;
+                    }).join('')}
+                </div>` : ''}
+
+                ${!meal.noCarbSwap ? `
+                <div class="sub-bar-label hide-for-coach">${t.carbSwapLbl}</div>
+                <div class="chips-scroll hide-for-coach">
+                    ${Object.keys(CARB_OPTIONS).map(k => {
+                        const cLbl = isEn() ? CARB_OPTIONS[k].labelEn : CARB_OPTIONS[k].labelAr;
+                        return `<button class="chip-btn chip-carb ${meal.activeCarb === k ? 'active' : ''}" onclick="swapCarb(${mIdx}, '${k}')">${cLbl}</button>`;
+                    }).join('')}
+                </div>` : ''}
+
+                <table class="clean-table">
+                    <thead>
+                        <tr>
+                            <th>${t.thItem}</th>
+                            <th>${t.thWeight} (${state.showRaw ? (isEn() ? 'Raw' : 'نيء') : (isEn() ? 'Cooked' : 'مطبوخ')})</th>
+                            <th>${t.thCal}</th>
+                            <th>${t.thPro}</th>
+                            <th>${t.thCarb}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${opt.items.map((it, ii) => {
+                            const itName = isEn() ? (it.nameEn || it.nameAr) : (it.nameAr || it.name);
+                            return `
+                            <tr>
+                                <td><strong>${itName}</strong></td>
+                                <td>
+                                    <span onclick="promptEditGrams(${mIdx}, ${ii})" style="border-bottom:1px dashed var(--muted); cursor:pointer;">
+                                        ${state.showRaw ? it.gRaw : it.gCooked}g
+                                    </span>
+                                </td>
+                                <td>${it.cal}</td>
+                                <td>${it.pro}g</td>
+                                <td>${it.carb}g</td>
+                            </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>
+
+                <div class="note-box">👨‍🍳 ${oPrep}</div>
+
+                ${meal.medSlot ? `
+                <div class="med-inline">
+                    <input type="checkbox" class="ios-check hide-for-coach" ${state.checks['med_' + meal.medSlot] ? 'checked' : ''} onchange="toggleTask('med_${meal.medSlot}')">
+                    <div>💊 ${getMedText(meal.medSlot, day)}</div>
+                </div>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+
+    refreshSummary();
+}
+
+function promptEditGrams(mIdx, iIdx) {
+    if (injectedCoachState) return;
+    const item = state.meals[mIdx].options[state.meals[mIdx].activeOpt].items[iIdx];
+    const dispName = isEn() ? (item.nameEn || item.nameAr) : item.nameAr;
+    const msg = isEn() ? `Enter weight in grams for "${dispName}":` : `تعديل وزن "${dispName}" بالجرام:`;
+    const val = prompt(msg, item.gCooked);
+    if (!val || isNaN(val)) return;
+    const g = Math.max(1, Number(val));
+    const ratio = g / (item.gCooked || 1);
+    item.gCooked = g;
+    item.gRaw = Math.round(item.gRaw * ratio);
+    item.cal = Math.round(item.cal * ratio);
+    item.pro = +(item.pro * ratio).toFixed(1);
+    item.carb = +(item.carb * ratio).toFixed(1);
+    renderMeals();
+    saveData();
+}
+
+function refreshSummary() {
+    let cal = 0, pro = 0, carb = 0;
+    state.meals.forEach(m => {
+        if (m.workoutOnly && state.dayType === 'rest') return;
+        m.options[m.activeOpt].items.forEach(i => { cal += +i.cal; pro += +i.pro; carb += +i.carb; });
+    });
+    document.getElementById('sumCal').innerText = Math.round(cal);
+    document.getElementById('sumPro').innerText = Math.round(pro) + 'g';
+    document.getElementById('sumCarb').innerText = Math.round(carb) + 'g';
+
+    const wCount = state.water.filter(Boolean).length;
+    document.getElementById('sumWater').innerText = `${(wCount * 0.5).toFixed(1)} / 3L`;
+
+    const keys = ['chk_med_pre', 'chk_m1', 'med_morning', 'chk_s1', 'chk_m2', 'chk_m3', 'med_evening'];
+    if (state.dayType === 'workout') keys.push('chk_s2');
+    const done = keys.filter(k => state.checks[k]).length + wCount;
+    const pct = Math.round((done / (keys.length + 6)) * 100);
+    const pctEl = document.getElementById('sumPct');
+    if (pctEl) pctEl.innerText = pct + '%';
+}
+
+function resetDaily() {
+    state.checks = {};
+    state.water = [false, false, false, false, false, false];
+    renderWater();
+    renderMeals();
+    saveData();
+}
+
+function setStartDate(val) {
+    if (!val) return;
+    state.startDate = val;
+    renderMeals();
+    saveData();
+}
+
+/* ==================== الجيم ==================== */
+function renderGym() {
+    const sp = document.getElementById('gymSplitSel').value || 'chest';
+    const list = state.gym[sp] || [];
+    document.getElementById('gymList').innerHTML = list.map((ex, i) => `
+        <div class="gym-item">
+            <div style="min-width:0; flex:1;">
+                <div style="font-weight:600; font-size:0.88rem;">${ex.name}</div>
+                <div style="font-size:0.75rem; color:var(--muted);">${ex.reps}</div>
+            </div>
+            <div class="gym-stepper">
+                <button class="step-btn hide-for-coach" onclick="stepGym('${sp}', ${i}, -2.5)">−</button>
+                <strong style="min-width:54px; text-align:center; font-size:0.86rem;">${ex.weight}kg</strong>
+                <button class="step-btn hide-for-coach" onclick="stepGym('${sp}', ${i}, 2.5)">+</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function stepGym(sp, idx, delta) {
+    state.gym[sp][idx].weight = Math.max(0, +(state.gym[sp][idx].weight + delta).toFixed(1));
+    renderGym();
+    saveData();
+}
+
+function addGymEx() {
+    const sp = document.getElementById('gymSplitSel').value;
+    const name = document.getElementById('newGymName').value.trim();
+    const weight = Number(document.getElementById('newGymW').value) || 20;
+    const reps = document.getElementById('newGymR').value.trim() || '3x10';
+    if (!name) return;
+    state.gym[sp].push({ name, weight, reps });
+    document.getElementById('newGymName').value = '';
+    renderGym();
+    saveData();
+}
+
+function addWeightLog() {
+    const w = parseFloat(document.getElementById('wLogInp').value);
+    const gut = document.getElementById('gutLogInp').value;
+    if (!w) return;
+    const d = new Date().toLocaleDateString(isEn() ? 'en-US' : 'ar-EG', { month: 'short', day: 'numeric' });
+    state.weightLogs.unshift({ date: d, weight: w, gut });
+    document.getElementById('wLogInp').value = '';
+    renderWeightLogs();
+    saveData();
+}
+
+function renderWeightLogs() {
+    const el = document.getElementById('wLogsBox');
+    if (!el) return;
+    el.innerHTML = state.weightLogs.slice(0, 4).map(l => `
+        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:0.5px solid var(--line);">
+            <span>${l.date}</span><strong>${l.weight} kg</strong><span>${l.gut}</span>
+        </div>
+    `).join('');
+}
+
+function renderFoodSearch() {
+    const q = (document.getElementById('foodQuery')?.value || '').trim().toLowerCase();
+    const res = FOOD_GUIDE.filter(f =>
+        !q || f.nAr.toLowerCase().includes(q) || f.nEn.toLowerCase().includes(q) || f.dEn.toLowerCase().includes(q)
+    );
+    document.getElementById('foodResults').innerHTML = res.map(f => `
+        <div style="padding:8px 0; border-bottom:0.5px solid var(--line);">
+            <div style="display:flex; justify-content:space-between; gap:8px;">
+                <strong>${isEn() ? f.nEn : f.nAr}</strong>
+                <span>${isEn() ? f.sEn : f.sAr}</span>
+            </div>
+            <div style="color:var(--muted); font-size:0.75rem; margin-top:2px;">${isEn() ? f.dEn : f.dAr}</div>
+        </div>
+    `).join('');
+}
+
+/* ==================== مشاركة آمنة بالعربية أو الإنجليزية ==================== */
+function buildCleanTextSummary() {
+    if (isEn()) {
+        let lines = [
+            `📋 *60-Day SIBO & Body Recomposition Plan — Amgad Hamdy*`,
+            `• Stats: 28yo | 79.3 kg | 180.5 cm | 34.7 kg Skeletal Muscle Mass`,
+            `• Mode: ${state.dayType === 'workout' ? 'Workout Day' : 'Rest Day'} (${document.getElementById('sumCal').innerText} kcal | ${document.getElementById('sumPro').innerText} Protein | ${document.getElementById('sumCarb').innerText} Carbs)`,
+            `• Clinical Exclusions: Strictly Gluten/Wheat-Free (60 days), Cheese/Dairy-Free, No Cucumber, No Processed Kofta or Heavy Tomato Paste.`,
+            `\n🍽️ *Selected Daily Meals:*`
+        ];
+        state.meals.forEach(m => {
+            if (m.workoutOnly && state.dayType === 'rest') return;
+            const opt = m.options[m.activeOpt];
+            const itemsStr = opt.items.map(i => `${i.nameEn} (${i.gCooked}g)`).join(' + ');
+            lines.push(`- ${m.timeEn} ${m.titleEn}: ${opt.nameEn}\n  [${itemsStr}]`);
+        });
+        lines.push(`\n💊 *Medications:* 08:30 AM Tavanic 500mg pre-breakfast (5d) | 09:30 AM Coloverin A (30d) + Diflucan 50mg (15d) then Vermizole 200mg (10d).`);
+        return lines.join('\n');
+    } else {
+        let lines = [
+            `📋 *خطة التغذية والتمرين وعلاج SIBO - أمجد حمدي*`,
+            `• البيانات: 28 سنة | 79.3 كجم | العضلات: 34.7 كجم`,
+            `• نوع اليوم: ${state.dayType === 'workout' ? 'يوم تمرين' : 'يوم راحة'} (${document.getElementById('sumCal').innerText} سعرة | ${document.getElementById('sumPro').innerText} بروتين | ${document.getElementById('sumCarb').innerText} كارب)`,
+            `• الممنوعات: القمح والجلوتين (60 يوم)، الأجبان، الخيار، الكفتة والصلصة المسبكة.`,
+            `\n🍽️ *الوجبات اليومية:*`
+        ];
+        state.meals.forEach(m => {
+            if (m.workoutOnly && state.dayType === 'rest') return;
+            const opt = m.options[m.activeOpt];
+            const itemsStr = opt.items.map(i => `${i.nameAr} (${i.gCooked}g)`).join(' + ');
+            lines.push(`- ${m.timeAr} ${m.titleAr}: ${opt.nameAr}\n  [${itemsStr}]`);
+        });
+        lines.push(`\n💊 *الأدوية:* 08:30ص Tavanic 500 قبل الفطار (5 أيام) | 09:30ص Coloverin A (شهر) + Diflucan 50 ثم Vermizole 200.`);
+        return lines.join('\n');
+    }
+}
+
+function shareWhatsAppSummary() {
+    window.open('https://wa.me/?text=' + encodeURIComponent(buildCleanTextSummary()), '_blank');
+}
+
+function downloadSafeCoachHTML() {
+    const cleanSnapshot = {
+        lang: state.lang, // يحفظ اللغة المختارة حالياً (EN أو AR) ويسمح للمراجع بالتبديل أيضاً
+        startDate: state.startDate,
+        dayType: state.dayType,
+        showRaw: state.showRaw,
+        darkMode: false,
+        checks: {},
+        water: [false, false, false, false, false, false],
+        meals: state.meals.map(m => ({ ...m, expanded: true })),
+        gym: state.gym,
+        weightLogs: state.weightLogs,
+        chatHistory: []
+    };
+    let htmlSrc = document.documentElement.outerHTML;
+    htmlSrc = htmlSrc.replace(/<script>window\.__COACH_SNAPSHOT__[\s\S]*?<\/script>/g, '');
+    const injectScript = `<script>window.__COACH_SNAPSHOT__ = ${JSON.stringify(cleanSnapshot)};<\/script>`;
+    htmlSrc = htmlSrc.replace('<head>', '<head>' + injectScript);
+    const blob = new Blob(['<!DOCTYPE html>\n' + htmlSrc], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = isEn() ? 'Amgad-SIBO-Recomp-Plan-EN.html' : 'Amgad-SIBO-Recomp-Plan-AR.html';
+    a.click();
+}
+
+function exportSafeBackup() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'amgad-plan-backup.json';
+    a.click();
+}
+
+function importBackup(ev) {
+    const f = ev.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        try {
+            state = { ...state, ...JSON.parse(e.target.result) };
+            saveData();
+            init();
+        } catch { alert('Invalid file'); }
+    };
+    r.readAsText(f);
+}
+
+/* ==================== الـ AI Agent بكامل القوة والسياق الكامل (بدون تقليل للتوكنز) ==================== */
+function getGeminiKey() { return localStorage.getItem(API_STORAGE_KEY) || ''; }
+
+function toggleKeyBox() {
+    const el = document.getElementById('keyBox');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function saveGeminiKey() {
+    const k = document.getElementById('apiKeyField').value.trim();
+    if (k) localStorage.setItem(API_STORAGE_KEY, k);
+    else localStorage.removeItem(API_STORAGE_KEY);
+    document.getElementById('keyBox').style.display = 'none';
+    updateAIStatusUI();
+    addBubble(k
+        ? (isEn() ? 'Gemini 2.5 Flash connected at full context & token capacity!' : 'تم ربط Gemini 2.5 Flash بكامل القوة والسياق بدون أي حدود للتوكنز!')
+        : 'Key cleared.', 'ai');
+}
+
+function updateAIStatusUI() {
+    const hasKey = !!getGeminiKey();
+    const dot = document.getElementById('aiDot');
+    const txt = document.getElementById('aiStatusText');
+    if (dot) dot.classList.toggle('online', hasKey);
+    if (txt) txt.innerText = hasKey ? T().aiOnline : T().aiOffline;
+}
+
+function addBubble(html, role, saveToHistory = true) {
+    const feed = document.getElementById('chatFeed');
+    if (!feed) return;
+    const b = document.createElement('div');
+    b.className = `bubble ${role === 'ai' ? 'bubble-ai' : 'bubble-user'}`;
+    b.innerHTML = html;
+    feed.appendChild(b);
+    feed.scrollTop = feed.scrollHeight;
+    if (saveToHistory && !injectedCoachState) {
+        state.chatHistory = state.chatHistory || [];
+        state.chatHistory.push({ role, html });
+        if (state.chatHistory.length > 30) state.chatHistory = state.chatHistory.slice(-30);
+        saveData();
+    }
+}
+
+function renderSavedChat() {
+    const feed = document.getElementById('chatFeed');
+    if (!feed) return;
+    feed.innerHTML = '';
+    if (state.chatHistory && state.chatHistory.length > 0) {
+        state.chatHistory.forEach(m => addBubble(m.html, m.role, false));
+    } else {
+        const welcome = isEn()
+            ? `Welcome Amgad! We are on <b>Day ${getCourseDay()} of 60</b>. All meal tabs now show dish names clearly, and I have full context of your meals, meds, and Bro Split weights. How are you feeling today?`
+            : `أهلاً يا أمجد! إحنا في <b>اليوم ${getCourseDay()} من 60</b>. كل الوجبات دلوقتي بأسمائها الصريحة، وأنا جاهز معاك بكامل تفاصيل أكلك وأدويتك وأوزان الجيم. طمني إيه الأخبار النهاردة؟`;
+        addBubble(welcome, 'ai', false);
+    }
+}
+
+function quickAsk(txt) {
+    document.getElementById('chatInp').value = txt;
+    handleSend();
+}
+
+function copySyncForMainGemini() {
+    const summary = buildCleanTextSummary();
+    navigator.clipboard.writeText(summary);
+    addBubble(isEn() ? 'Full plan summary copied to clipboard 📋!' : 'نسخت ملخص خطتك بالكامل للحافظة 📋!', 'ai');
+}
+
+function buildFullAgentContext() {
+    const mealsSnapshot = state.meals.map(m => {
+        const opt = m.options[m.activeOpt];
+        return `${m.timeEn} ${m.titleEn}: Active Dish="${opt.nameEn}" | Available Named Options=[${m.options.map(o => o.shortEn).join(', ')}] | Items=[${opt.items.map(i => `${i.nameEn} ${i.gCooked}g (${i.cal}kcal, ${i.pro}g P, ${i.carb}g C)`).join('; ')}]`;
+    }).join('\n');
+
+    return `You are the dedicated personal AI nutrition, SIBO recovery, and hypertrophy coach for Engineer Amgad Hamdy (28 years old, 79.3 kg, 180.5 cm, 34.7 kg muscle mass).
+FULL LIVE CONTEXT:
+- Course Start Date: ${state.startDate}, Current Day: ${getCourseDay()} of 60.
+- Day Mode: ${state.dayType} | Active Totals: ${document.getElementById('sumCal').innerText} kcal, ${document.getElementById('sumPro').innerText} Protein, ${document.getElementById('sumCarb').innerText} Carbs, Water: ${document.getElementById('sumWater').innerText}.
+- Strict Clinical Rules: 60 days 100% Wheat/Gluten-Free (SIBO), No Cheese/Dairy, No Cucumber, No Street Kofta, No Heavy Tomato Paste in lunches. Separate Tavanic 500mg from calcium/minerals by 2 hours and keep gym weights moderate during/shortly after Tavanic for tendon safety.
+- Active Meals & Macros:\n${mealsSnapshot}
+- Logged Gym Weights (Bro Split): ${JSON.stringify(state.gym)}
+- Weight & Gut Logs: ${JSON.stringify(state.weightLogs.slice(0, 5))}
+
+Reply naturally in ${isEn() ? 'English' : 'Egyptian Arabic'} with thorough, helpful, proactive guidance and follow-up questions.
+If Amgad asks to execute an app change, append on a new final line (optional):
+ACTION_JSON:{"action":"set_tomorrow" | "set_rest" | "set_workout" | "rotate_meals" | "lang_en" | "lang_ar"}`;
+}
+
+async function handleSend() {
+    const inp = document.getElementById('chatInp');
+    const msg = inp.value.trim();
+    if (!msg) return;
+    inp.value = '';
+    addBubble(msg, 'user');
+
+    const key = getGeminiKey();
+    if (key) {
+        try {
+            const historyParts = (state.chatHistory || []).slice(-12).map(h => ({
+                role: h.role === 'ai' ? 'model' : 'user',
+                parts: [{ text: h.html.replace(/<[^>]+>/g, '') }]
+            }));
+
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    systemInstruction: { parts: [{ text: buildFullAgentContext() }] },
+                    contents: [...historyParts, { role: 'user', parts: [{ text: msg }] }]
+                })
+            });
+            const data = await res.json();
+            let text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+                const match = text.match(/ACTION_JSON:(\{.*\})/);
+                if (match) {
+                    text = text.replace(match[0], '').trim();
+                    try { executeAgentAction(JSON.parse(match[1]).action); } catch {}
+                }
+                addBubble(text.replace(/\n/g, '<br>'), 'ai');
+                return;
+            }
+        } catch (err) {}
+    }
+
+    const t = msg.toLowerCase();
+    if (t.includes('english') || t.includes('انجلش')) {
+        executeAgentAction('lang_en');
+        addBubble('Switched the entire app to English! You can now export or share it directly with your coaches.', 'ai');
+    } else if (t.includes('عربي') || t.includes('arabic')) {
+        executeAgentAction('lang_ar');
+        addBubble('رجعتلك الموقع كله للعربي فوراً!', 'ai');
+    } else if (t.includes('بكره') || t.includes('بكرة') || t.includes('tomorrow')) {
+        executeAgentAction('set_tomorrow');
+        addBubble(isEn() ? `Start date set to tomorrow (${state.startDate})!` : `ظبطتلك تاريخ البداية على بكرة (${state.startDate})!`, 'ai');
+    } else if (t.includes('زهق') || t.includes('بدل') || t.includes('swap')) {
+        executeAgentAction('rotate_meals');
+        addBubble(isEn() ? 'Rotated all your meals to the next named dish options!' : 'بدّلتلك كل الوجبات للأكلات التانية بأسمائها الصريحة!', 'ai');
+    } else {
+        addBubble(isEn()
+            ? `Tap <b>🔑 API Key</b> above to connect your free Gemini key for full unrestricted AI coaching! Current daily target: <b>${document.getElementById('sumCal').innerText} kcal | ${document.getElementById('sumPro').innerText} Protein</b>.`
+            : `اضغط على <b>🔑 المفتاح</b> فوق وحط مفتاح Gemini عشان أتكلم معاك بكامل القوة والسياق بدون أي حدود للتوكنز! حالياً يومك مضبوط على <b>${document.getElementById('sumCal').innerText} سعرة و ${document.getElementById('sumPro').innerText} بروتين</b>.`, 'ai');
+    }
+}
+
+function executeAgentAction(action) {
+    if (action === 'set_tomorrow') {
+        const tmr = new Date();
+        tmr.setDate(tmr.getDate() + 1);
+        setStartDate(tmr.toISOString().slice(0, 10));
+        document.getElementById('startInp').value = state.startDate;
+        resetDaily();
+    } else if (action === 'set_rest') setDayType('rest');
+    else if (action === 'set_workout') setDayType('workout');
+    else if (action === 'lang_en' && !isEn()) toggleLang();
+    else if (action === 'lang_ar' && isEn()) toggleLang();
+    else if (action === 'rotate_meals') {
+        state.meals.forEach(m => { if (m.options.length > 1) m.activeOpt = (m.activeOpt + 1) % m.options.length; });
+        renderMeals();
+        saveData();
+    }
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
