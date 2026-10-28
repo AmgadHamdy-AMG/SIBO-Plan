@@ -1347,6 +1347,11 @@ function toggleLang() {
 }
 
 function init() {
+     {
+    if (!window.__LANG_SET_THIS_SESSION__) {
+        state.lang = 'en';
+        window.__LANG_SET_THIS_SESSION__ = true;
+    }
     if (injectedCoachState) document.body.classList.add('readonly-coach');
     applyTheme();
     document.getElementById('startInp').value = state.startDate;
